@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>MeetMe — Scheduling, but actually thoughtful</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: #f0eee9; font-family: Inter, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="dashboard.jsx"></script>
+<script type="text/babel" src="booking.jsx"></script>
+<script type="text/babel" src="best-time.jsx"></script>
+<script type="text/babel" src="group.jsx"></script>
+<script type="text/babel" src="supporting.jsx"></script>
+<script type="text/babel" src="mobile.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#c8674a",
+  "density": "comfortable",
+  "showMobile": true
+}/*EDITMODE-END*/;
+
+function Root() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply accent live
+  React.useEffect(() => {
+    document.documentElement.style.setProperty("--mm-clay", t.accent);
+  }, [t.accent]);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="overview" title="MeetMe" subtitle="A scheduling app that finds genuinely good times — not just free ones. Premium-minimal, calm typography, ready for users over 40.">
+          <DCArtboard id="host-dashboard" label="Host · Dashboard" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/dashboard" width={1280} height={920}>
+              <HostApp initial="dashboard" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+
+          <DCArtboard id="public-booking" label="Public · Guest Booking" width={1280} height={920}>
+            <SafariFrame url="alex.meetme.com/coaching" width={1280} height={920}>
+              <PublicBooking/>
+            </SafariFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="differentiators" title="The two differentiators" subtitle="Most tools show free slots. MeetMe shows good ones — and resolves group meetings without polls.">
+          <DCArtboard id="best-time" label="Best Time Intelligence" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/best-time" width={1280} height={920}>
+              <HostApp initial="best" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+
+          <DCArtboard id="group-find" label="Smart Group Scheduling" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/group" width={1280} height={920}>
+              <HostApp initial="group" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="rules" title="Rules &amp; setup" subtitle="The screens that turn settings into real protection.">
+          <DCArtboard id="availability" label="Availability + Energy-aware" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/availability" width={1280} height={920}>
+              <HostApp initial="availability" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+
+          <DCArtboard id="event-types" label="Event Types" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/event-types" width={1280} height={920}>
+              <HostApp initial="events" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+
+          <DCArtboard id="calendar-sync" label="Calendar Sync · Onboarding" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/sync" width={1280} height={920}>
+              <HostApp initial="sync" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="comms" title="Communications &amp; integrations" subtitle="Every message, every connected tool — visible in one place.">
+          <DCArtboard id="reminders" label="Reminders &amp; Automations" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/reminders" width={1280} height={920}>
+              <HostApp initial="reminders" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+
+          <DCArtboard id="integrations" label="Integrations" width={1280} height={920}>
+            <SafariFrame url="app.meetme.com/integrations" width={1280} height={920}>
+              <HostApp initial="integrations" density={t.density}/>
+            </SafariFrame>
+          </DCArtboard>
+        </DCSection>
+
+        {t.showMobile && (
+          <DCSection id="mobile" title="Mobile · Guest booking" subtitle="Calm, large hit targets, friendly for users over 40.">
+            <DCArtboard id="mobile-time" label="iPhone · Pick a time" width={395} height={832}>
+              <MobileBooking/>
+            </DCArtboard>
+          </DCSection>
+        )}
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection title="Style">
+          <TweakColor
+            label="Accent (terracotta)"
+            value={t.accent}
+            onChange={v => setTweak("accent", v)}
+            options={["#c8674a", "#b25636", "#8a3d4c", "#c69648"]}
+          />
+          <TweakRadio
+            label="Density"
+            value={t.density}
+            onChange={v => setTweak("density", v)}
+            options={[
+              { value: "comfortable", label: "Comfortable" },
+              { value: "compact", label: "Compact" },
+            ]}
+          />
+        </TweakSection>
+        <TweakSection title="Artboards">
+          <TweakToggle
+            label="Show mobile"
+            value={t.showMobile}
+            onChange={v => setTweak("showMobile", v)}
+          />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Root/>);
+</script>
+</body>
+</html>

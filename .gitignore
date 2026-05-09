@@ -1,0 +1,31 @@
+# Local secrets
+/config/config.php
+.env
+.env.*
+
+# Runtime files
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+/storage/sessions/*
+
+# Dependency folders
+/vendor/
+/node_modules/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build/cache output
+/dist/
+/build/
+/.cache/
+
+# Temporary archives and local exports
+*.zip
+*.tar
+*.tar.gz
+*.log
