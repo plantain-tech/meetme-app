@@ -64,10 +64,14 @@ function handle_post(array $user): void
 
     if ($action === 'create_page') {
         $title = trim((string) $_POST['title']);
-        $slug = slugify((string) ($_POST['slug'] ?: $title));
+        if ($title === '') {
+            flash('Please enter a booking page title.', 'error');
+            redirect(url('pages'));
+        }
+        $slug = unique_booking_page_slug(slugify((string) ($_POST['slug'] ?: $title)));
         $stmt = db()->prepare('INSERT INTO booking_pages (user_id, title, slug, description, brand_color, is_active) VALUES (?, ?, ?, ?, ?, ?)');
         $stmt->execute([$userId, $title, $slug, trim((string) $_POST['description']), $_POST['brand_color'], isset($_POST['is_active']) ? 1 : 0]);
-        flash('Booking page created.');
+        flash('Booking page created. Public slug: ' . $slug);
         redirect(url('pages'));
     }
 
@@ -244,6 +248,20 @@ function row(string $sql, array $params = []): ?array
 {
     $rows = rows($sql, $params);
     return $rows[0] ?? null;
+}
+
+function unique_booking_page_slug(string $baseSlug): string
+{
+    $baseSlug = $baseSlug !== '' ? $baseSlug : 'booking-page';
+    $slug = $baseSlug;
+    $suffix = 2;
+
+    while (row('SELECT id FROM booking_pages WHERE slug=? LIMIT 1', [$slug])) {
+        $slug = $baseSlug . '-' . $suffix;
+        $suffix++;
+    }
+
+    return $slug;
 }
 
 function page_dashboard(array $user): void
