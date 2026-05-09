@@ -9,7 +9,7 @@ $config = file_exists($configPath) ? require $configPath : require $examplePath;
 
 date_default_timezone_set($config['timezone'] ?? 'UTC');
 
-function app_config(?string $key = null, mixed $default = null): mixed
+function app_config(?string $key = null, $default = null)
 {
     global $config;
     if ($key === null) {
@@ -25,7 +25,7 @@ function app_config(?string $key = null, mixed $default = null): mixed
     return $value;
 }
 
-function db(): ?PDO
+function db()
 {
     static $pdo = null;
     static $failed = false;
@@ -59,7 +59,7 @@ function db(): ?PDO
     }
 }
 
-function h(mixed $value): string
+function h($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
@@ -146,7 +146,7 @@ function slugify(string $value): string
     return trim($value, '-');
 }
 
-function redirect(string $to): never
+function redirect(string $to): void
 {
     header('Location: ' . $to);
     exit;

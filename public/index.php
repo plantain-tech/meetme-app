@@ -145,20 +145,44 @@ function layout(string $page, array $user): void
     echo '<main class="main">';
     setup_notice();
     foreach (flashes() as $f) echo '<div class="flash ' . h($f['type']) . '">' . h($f['message']) . '</div>';
-    match ($page) {
-        'pages' => page_booking_pages($user),
-        'events' => page_events($user),
-        'availability' => page_availability($user),
-        'sync' => page_calendar_sync($user),
-        'team' => page_team($user),
-        'best' => page_best_time($user),
-        'group' => page_group($user),
-        'reminders' => page_reminders($user),
-        'payments' => page_payments($user),
-        'integrations' => page_integrations($user),
-        'settings' => page_settings($user),
-        default => page_dashboard($user),
-    };
+    switch ($page) {
+        case 'pages':
+            page_booking_pages($user);
+            break;
+        case 'events':
+            page_events($user);
+            break;
+        case 'availability':
+            page_availability($user);
+            break;
+        case 'sync':
+            page_calendar_sync($user);
+            break;
+        case 'team':
+            page_team($user);
+            break;
+        case 'best':
+            page_best_time($user);
+            break;
+        case 'group':
+            page_group($user);
+            break;
+        case 'reminders':
+            page_reminders($user);
+            break;
+        case 'payments':
+            page_payments($user);
+            break;
+        case 'integrations':
+            page_integrations($user);
+            break;
+        case 'settings':
+            page_settings($user);
+            break;
+        default:
+            page_dashboard($user);
+            break;
+    }
     echo '</main></div></body></html>';
 }
 
@@ -430,13 +454,18 @@ function public_booking(string $slug): void
 
 function meeting_url(string $location): string
 {
-    return match ($location) {
-        'google_meet' => 'Google Meet link will be generated',
-        'teams' => 'Microsoft Teams link will be generated',
-        'phone' => 'Phone call',
-        'in_person' => 'In-person meeting',
-        default => 'Zoom link will be generated',
-    };
+    switch ($location) {
+        case 'google_meet':
+            return 'Google Meet link will be generated';
+        case 'teams':
+            return 'Microsoft Teams link will be generated';
+        case 'phone':
+            return 'Phone call';
+        case 'in_person':
+            return 'In-person meeting';
+        default:
+            return 'Zoom link will be generated';
+    }
 }
 
 function manage_booking(string $token): void
