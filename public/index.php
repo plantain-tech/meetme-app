@@ -254,11 +254,11 @@ function page_dashboard(array $user): void
     topbar('Good morning, ' . $user['name'], 'Your scheduling command center.', $actions);
     echo '<section class="content grid">';
     echo '<div class="grid grid-5">';
-    stat('Bookings', (string) table_count('bookings', $uid), 'All time');
-    stat('Event Types', (string) table_count('event_types', $uid), 'Active offers');
-    stat('Pages', (string) table_count('booking_pages', $uid), 'Public links');
-    stat('Team', (string) table_count('team_members', $uid), 'Members');
-    stat('Focus', '11.5h', 'Protected this week');
+    render_stat('Bookings', (string) table_count('bookings', $uid), 'All time');
+    render_stat('Event Types', (string) table_count('event_types', $uid), 'Active offers');
+    render_stat('Pages', (string) table_count('booking_pages', $uid), 'Public links');
+    render_stat('Team', (string) table_count('team_members', $uid), 'Members');
+    render_stat('Focus', '11.5h', 'Protected this week');
     echo '</div><div class="grid grid-2">';
     echo '<section class="card"><h3>Recent bookings</h3><table class="table"><tr><th>Guest</th><th>Event</th><th>Time</th><th>Status</th></tr>';
     foreach ($bookings as $b) {
@@ -271,7 +271,7 @@ function page_dashboard(array $user): void
     echo '<a class="btn clay" href="' . h(url('best')) . '">Review suggestions</a></section></div></section>';
 }
 
-function stat(string $label, string $value, string $caption): void
+function render_stat(string $label, string $value, string $caption): void
 {
     echo '<article class="card stat"><span class="muted">' . h($label) . '</span><strong>' . h($value) . '</strong><span class="pill green">' . h($caption) . '</span></article>';
 }
