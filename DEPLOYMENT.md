@@ -50,9 +50,28 @@ Then update:
 
 Do not commit real production secrets.
 
-## 3. Upload to Hostinger
+## 3. Deploy to Hostinger
 
-Preferred structure:
+Current production target:
+
+```text
+https://meetme.kaptainone.com
+```
+
+Hostinger Git deployment:
+
+```text
+Repository: https://github.com/plantain-tech/meetme-app.git
+Branch: main
+Directory: meetme
+Actual folder: public_html/meetme
+```
+
+Important: in Hostinger's Git deployment screen, the `Directory` field is relative to `public_html`. Use `meetme`, not `public_html/meetme`, otherwise Hostinger may deploy into `public_html/public_html/meetme`.
+
+The repository includes a root `index.php` that loads the app from `public/index.php`, so deploying the whole repository into `public_html/meetme` is supported.
+
+Preferred long-term structure:
 
 ```text
 public_html/
@@ -86,7 +105,37 @@ MeetMe/
 
 If you move files during deployment, adjust the `require dirname(__DIR__) . '/app/bootstrap.php';` line in `public/index.php`.
 
-## 4. Features implemented in this first PHP build
+## 4. Repeatable Workflow
+
+Every future update should follow this sequence:
+
+```text
+update locally -> test locally -> commit -> push to GitHub -> deploy on Hostinger -> verify live site
+```
+
+Local commands:
+
+```bash
+git status
+git add .
+git commit -m "Describe the change"
+git push
+```
+
+Hostinger steps after `git push`:
+
+1. Open hPanel.
+2. Go to the `meetme.kaptainone.com` site.
+3. Open Git deployment / Manage Repositories.
+4. Click the three-dot menu for `plantain-tech/meetme-app`.
+5. Click `Deploy`.
+6. Open `View latest build output`.
+7. Confirm it ends with `Deployment end`.
+8. Visit `https://meetme.kaptainone.com`.
+
+If Hostinger Auto Deployment is enabled later, the manual `Deploy` click can be replaced by Hostinger's auto deployment webhook.
+
+## 5. Features implemented in this first PHP build
 
 - Host dashboard
 - Booking pages
@@ -105,7 +154,7 @@ If you move files during deployment, adjust the `require dirname(__DIR__) . '/ap
 - Settings page
 - MySQL schema for the core scheduling product
 
-## 5. Features that still need provider credentials
+## 6. Features that still need provider credentials
 
 These screens exist, but real third-party behavior requires provider setup:
 
@@ -126,7 +175,7 @@ These screens exist, but real third-party behavior requires provider setup:
 - CRM integrations
 - Webhooks/API authentication
 
-## 6. Suggested next implementation order
+## 7. Suggested next implementation order
 
 1. Add secure password login and account creation.
 2. Add complete CRUD for availability date overrides.
